@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <head>
+    <title>Корзина</title>
+    </head>
+    <style>
+        /* Общие стили */
+        body {
+            background-color: #343a40;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+        }
+
+        .custom-card-body {
+            background-color: #808080; /* Сірий колір */
+        }
+    </style>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Ваша Корзина</h1>
+
+        <!-- Clear cart button -->
+        <form method="POST" action="{% url 'clear_cart' %}" class="mb-4">
+            {% csrf_token %}
+            <button class="btn btn-danger">Очистити корзину</button>
+        </form>
+
+        <!-- Items in the cart -->
+        {% for item in goods_in_cart %}
+            <div class="card mb-4">
+                <div class="card-body custom-card-body"> <!-- Додано клас custom-card-body -->
+                    <table class="table table-dark">
+                        <tbody>
+                        <tr>
+                            <td>id: {{ item.0 }}</td>
+                            <td>{{ item.1 }}</td>
+                            <td>Ціна: {{ item.2 }} €</td>
+                            <td>Кількість: {{ item.4 }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Buttons for operations -->
+                    <div class="d-flex justify-content-between">
+                        <div class="btn-group">
+                            <form method="POST" action="{% url 'plus_button_in_cart' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ item.0 }}">
+
+                                <button class="btn btn-success" {{ item.5 }}>
+                                    {% if item.5 == 'disabled' %}
+
+                                        Більше немає на складі{% else %}Додати{% endif %}</button>
+                            </form>
+
+                            <form method="POST" action="{% url 'minus_button_in_cart' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ item.0 }}">
+                                <button class="btn btn-warning ml-2">Відняти</button>
+                            </form>
+                        </div>
+
+                        <form method="POST" action="{% url 'delete_item_in_cart' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ item.0 }}">
+                            <button class="btn btn-danger">Видалити</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- Total cost and Order button -->
+        <div class="mb-4">
+            <span><strong>Всього: {{ total_cost }} €</strong></span>
+            <span style="margin-left: 10px;"></span> <!-- Добавленный пробел -->
+            <form method="POST" action="{% url 'finish_order' %}" style="display: inline-block;">
+                {% csrf_token %}
+                <button class="btn btn-success ml-2" {{ cart_disabler }}>{% if cart_disabler == 'disabled' %}
+                    Корзина пуста{% else %}Оформити замовлення{% endif %}</button>
+            </form>
+        </div>
+
+    </div><br><br><br>
+
+
+{% endblock %}

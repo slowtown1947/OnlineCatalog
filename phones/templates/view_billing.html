@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Замовлення № {{ billing_id }}</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #343a40; /* Темний фон */
+                color: #fff; /* Білий текст */
+                margin: 0;
+            }
+
+            h2 {
+                color: #fff; /* Білий текст */
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .order-details {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .item {
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                background-color: #454d55; /* Темний фон для товару */
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .product-image {
+                width: auto;
+                height: 75px;
+                margin-right: 20px;
+                border-radius: 5px;
+            }
+
+            .item p {
+                margin: 0;
+                color: #fff; /* Білий текст */
+            }
+
+            .item-details {
+                flex-grow: 1;
+            }
+
+            /* Додано стилі для блоку загальної ціни */
+            .total-price {
+                margin-top: 30px;
+                text-align: right;
+                font-size: 18px;
+                color: #fff; /* Білий текст */
+            }
+        </style>
+    </head>
+    <body>
+
+    <h2>Замовлення № {{ billing_id }}</h2>
+
+    <div class="order-details">
+        {% for basket_item in basket_array %}
+            <div class="item">
+                <img class="product-image" src="{{ basket_item.2.url }}" alt="Зображення товару">
+
+                <div class="item-details">
+                    <p>№ {{ basket_item.1 }}</p>
+                    <p>Назва товару: {{ basket_item.0.goods_name }}</p>
+                    <p>Кількість: {{ basket_item.0.goods_count }}</p>
+                    <p>Ціна товару: {{ basket_item.0.goods_price }}</p>
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- Доданий блок для відображення загальної ціни корзини -->
+        <div class="total-price">
+            <p>Загальна ціна: {{ basket_array.0.3 }}</p>
+        </div>
+    </div>
+
+    </body>
+    </html>
+{% endblock %}

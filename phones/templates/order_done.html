@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <head>
+        <meta charset="UTF-8">
+        <title>Оформлення замовлення</title>
+        <style>
+            body {
+                background-color: #343a40; /* Set dark background color */
+                font-family: 'Arial', sans-serif;
+                color: #fff;
+            }
+
+            h1 {
+                color: #fff;
+                text-align: center; /* Center the text */
+            }
+
+            .return-button-container {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+            }
+
+            .return-button {
+                padding: 10px 20px;
+                background-color: #007bff; /* Set button color */
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+                display: inline-block;
+            }
+
+            .return-button:hover {
+                background-color: #0056b3; /* Set button color on hover */
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Замовлення пройшло успішно!<br> Номер вашого замовлення: <strong>{{ bill_id }}</strong></h1>
+
+        <div class="return-button-container">
+            <a href="{% url 'homepage' %}" class="return-button">Повернутися до головної сторінки</a>
+        </div>
+    </body>
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <head>
+
+        <title>{{ phone_post.phone_name }}</title>
+        <style>
+            /* Updated styles for the product page */
+            body {
+                background-color: #343a40; /* Dark background color */
+                color: #fff;
+                font-family: 'Montserrat', sans-serif;
+                line-height: 1.6;
+                margin: 0;
+            }
+
+            h1, h2 {
+                color: #fff;
+                margin-bottom: 10px;
+            }
+
+            .product-image {
+                max-width: 100%;
+                height: auto;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+            }
+
+            .small-images {
+                display: flex;
+                margin-top: 10px;
+            }
+
+            .small-images img {
+                width: 80px;
+                margin-right: 10px;
+                border-radius: 4px;
+            }
+
+            .product-details {
+                padding: 20px;
+                background-color: #495057;
+                border-radius: 8px;
+                margin-top: 20px;
+            }
+
+            .btn-group {
+                margin-top: 20px;
+                text-align: center;
+            }
+
+            .btn-buy, .btn-cart {
+                padding: 12px 24px;
+                font-size: 16px;
+                margin: 0 10px;
+                color: #fff;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            .btn-buy {
+                background-color: #28a745;
+                border: none;
+            }
+
+            .btn-cart {
+                background-color: #007bff;
+                border: none;
+            }
+
+            .btn-buy:hover, .btn-cart:hover {
+                opacity: 0.9;
+            }
+
+            .mt-4 {
+                margin-top: 20px;
+            }
+
+            /* Additional spacing and margins */
+            .container {
+                margin-top: 40px;
+            }
+
+            /* Improved spacing for the description */
+            .product-description {
+                margin-top: 40px;
+                padding: 20px;
+                background-color: #343a40;
+                border-radius: 8px;
+            }
+
+            /* Покращення вигляду історії перегляду товарів */
+            .view-history-container {
+                display: flex;
+                overflow-x: auto;
+                margin-top: 20px;
+            }
+
+            .view-history-item {
+                flex: 0 0 calc(20% - 20px); /* 5 товарів в рядку, з відступом 20px між ними */
+                margin-right: 20px;
+                box-sizing: border-box;
+            }
+
+            .view-history-item:last-child {
+                margin-right: 0; /* Видаляємо відступ для останнього елемента */
+            }
+
+            .view-history-item img {
+
+                height: 200px;
+                border-radius: 8px;
+            }
+
+            .view-history-item p {
+                margin-top: 10px;
+                color: #fff;
+            }
+
+            h2 {
+                margin-top: 30px;
+            }
+        </style>
+    </head>
+
+    <body>
+    <div class="container">
+        <div class="row">
+            <!-- Main and additional product images -->
+            <div class="col-md-6">
+                <img src="{{ phone_post.phone_image.url }}" alt="{{ phone_post.phone_name }}"
+                     class="img-fluid product-image">
+                <div class="small-images">
+                    {% if phone_post.phone_additional_image_1 %}
+                        <img src="{{ phone_post.phone_additional_image_1.url }}" alt="Small Image 1"
+                             class="img-fluid small-image">
+                    {% endif %}
+                    {% if phone_post.phone_additional_image_2 %}
+                        <img src="{{ phone_post.phone_additional_image_2.url }}" alt="Small Image 2"
+                             class="img-fluid small-image">
+                    {% endif %}
+                    {% if phone_post.phone_additional_image_3 %}
+                        <img src="{{ phone_post.phone_additional_image_3.url }}" alt="Small Image 3"
+                             class="img-fluid small-image">
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Product details -->
+            <div class="col-md-6 product-details">
+                <h1>{{ phone_post.phone_name }}</h1>
+                <h2>{{ phone_post.phone_price }} €</h2>
+                <!-- Buy and Cart buttons -->
+                <div class="btn-group">
+                    <form method="POST" action="{% url 'cart' %}" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ phone_post.phone_id }}">
+                        <input type="hidden" name="name" value="{{ phone_post.phone_name }}">
+                        <input type="hidden" name="price" value="{{ phone_post.phone_price }}">
+                        <input type="hidden" name="date" value="{{ phone_post.phone_date }}">
+                        <button class="btn btn-buy mr-2" type="submit"
+                                {{ buy_button_trigger }}{{ out_of_stock_disabler }}>
+                            {% if buy_button_trigger == 'disabled' %}
+                                Товар уже в корзині
+                            {% elif out_of_stock_disabler == 'disabled' %}
+                                Немає в наявності
+                            {% else %}
+                                Купити
+                            {% endif %}
+                        </button>
+                    </form>
+                    <a href="{% url 'get_cart' %}" class="btn btn-cart btn-back">Перейти в корзину</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product description -->
+        <div class="row mt-4 product-description">
+            <div class="col-md-12">
+                <p>{{ phone_post.phone_description | safe }}</p>
+            </div>
+        </div>
+    </div>
+    </body>
+
+    <h2>Переглянуті товари</h2>
+    <div class="view-history-container">
+        {% for vhistory_object in view_history %}
+            <div class="view-history-item">
+                <a href="{{ vhistory_object.get_absolute_url }}">
+                    <img src="{{ vhistory_object.phone_image.url }}" alt="img" class="img-fluid product-image">
+                </a>
+                <p>
+                    <a href="{{ vhistory_object.get_absolute_url }}">
+                        {{ vhistory_object.phone_name }}
+                    </a><br>
+                    {{ vhistory_object.phone_price }} €<br>
+                    <!-- Додайте будь-яку іншу відомості, яку ви хочете відобразити -->
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}
