@@ -13,6 +13,7 @@ parsed_data = {}  # data for post request
 user_input = {}  # don't touch it
 
 
+# get curl method
 def get_curl(link):
     c = pycurl.Curl()
     c.setopt(c.URL, link)
@@ -25,6 +26,7 @@ def get_curl(link):
     return body.decode('utf-8')
 
 
+# post curl method
 def post_curl(data, link):
     url = link
     # headers = {'Content-Type': 'application/json'}
@@ -36,6 +38,7 @@ def post_curl(data, link):
     c.perform()
 
 
+# callback for buttons
 @bot.callback_query_handler(func=lambda call: True)
 def handle_inline_buttons(call):
     if call.data == 'go_to_site':
@@ -70,6 +73,7 @@ def handle_inline_buttons(call):
         confirm_order(call.message.chat.id)
 
 
+# start button func
 @bot.message_handler(commands=['start'])
 def main(message):
     markup = types.InlineKeyboardMarkup()
@@ -84,6 +88,7 @@ def main(message):
                      f'Тут ви можете переглянути деталі свого замовлення, або зробити нове.', reply_markup=markup)
 
 
+# get order info with phone number by post request
 def order_by_number_callback(message):
     status_dict = {0: 'Не активне', 1: 'Не оформленно', 2: 'Оформленно',
                    3: 'Оплачено', 4: 'Відправленно у доставку', 5: 'Доставлено'}
@@ -98,6 +103,7 @@ def order_by_number_callback(message):
     main(message)
 
 
+# method for getting with post request and parsing data about all goods
 def get_goods_utility():
     json_data = get_curl(f'http://127.0.0.1:8000/api/v1/testlist/')
     parsed_data_goods = json.loads(json_data)

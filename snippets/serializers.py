@@ -1,21 +1,6 @@
-import io
 
 from rest_framework import serializers
-from rest_framework.parsers import JSONParser
-from rest_framework.renderers import JSONRenderer
-
-from phones.models import PhoneModel, Billings
-
-
-# class PhoneSerializer(serializers.HyperlinkedModelSerializer):
-#
-#     image = serializers.ReadOnlyField(source='product.image')
-
-
-# class PhoneModelForSerializer:
-#     def __init__(self, phone_name, phone_cat_id):
-#         self.phone_name = phone_name
-#         self.phone_cat_id = phone_cat_id
+from phones.models import Billings
 
 
 class PhoneSerializer(serializers.Serializer):
@@ -40,22 +25,6 @@ class PhoneForTgBotSerializer(serializers.Serializer):
     phone_image = serializers.ImageField(allow_empty_file=True)
     phone_date = serializers.DateTimeField()
     phone_amount = serializers.IntegerField()
-
-
-# def encode():
-#     model = PhoneModelForSerializer('Nokia123', 2)
-#     model_sr = PhoneSerializer(model)
-#     print(model_sr.data, type(model_sr), sep='\n')
-#     json = JSONRenderer().render(model_sr.data)
-#     print(json)
-#
-#
-# def decode():
-#     stream = io.BytesIO(b'{"phone_name":"Nokia123","phone_cat_id":2}')
-#     data = JSONParser().parse(stream)
-#     serializer = PhoneSerializer(data=data)
-#     serializer.is_valid()
-#     print(serializer.validated_data)
 
 
 class BillingSerializer(serializers.ModelSerializer):

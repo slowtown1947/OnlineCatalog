@@ -13,8 +13,8 @@ from snippets.serializers import PhoneSerializer, BillingSerializer, PhoneForTgB
 class PhoneListAPIView(APIView):
 
     def get(self, request):
-        w = PhoneModel.objects.all().exclude(phone_amount=0)
-        return Response({'objects': PhoneForTgBotSerializer(w, many=True).data})
+        w = PhoneModel.objects.all().exclude(phone_amount=0)  # send only in stock items
+        return Response({'objects': PhoneForTgBotSerializer(w, many=True).data})  # many=True is important
 
     def post(self, request):
         post_new = PhoneModel.objects.create(phone_name=request.data['phone_name'],
@@ -23,13 +23,6 @@ class PhoneListAPIView(APIView):
                                              phone_image=request.data['phone_image'])
 
         return Response({'post': PhoneSerializer(post_new).data})
-
-
-class PhoneObjectAPIView(APIView):
-
-    def get(self, request):
-        w = PhoneModel.objects.all()
-        return Response({'objects': PhoneForTgBotSerializer(w, many=True).data})
 
 
 class BillingObjectAPIView(APIView):
@@ -42,6 +35,7 @@ class BillingObjectAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+# post simple billing and all basket objects in one post request
 class BillingAPIView(APIView):
 
     def get(self, request):
@@ -71,11 +65,3 @@ class BillingAPIView(APIView):
             Response({'post': model_to_dict(post_new_basket)})
 
         return Response({'post': model_to_dict(post_new_billing)})
-
-# class BasketsAPIView(APIView):
-#
-#     def get(self, request):
-#         pass
-#
-#     def post(self, request):
-#         pass

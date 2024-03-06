@@ -3,7 +3,6 @@ import pycurl
 import certifi
 from io import BytesIO
 
-from rest_framework import generics
 from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
@@ -22,6 +21,7 @@ logger = logging.getLogger('phones')
 register = template.Library()
 
 
+# curl get request function
 def get_curl(link):
     c = pycurl.Curl()
     c.setopt(c.URL, link)
@@ -34,14 +34,10 @@ def get_curl(link):
     return body.decode('utf-8')
 
 
+# simple registration form
+# email records as username
+# template 'signup.html'
 def signup_user(request):
-    """
-    simple registration form
-    email records as username
-    template 'signup.html'
-    :param request:
-    :return:
-    """
     if request.method == 'GET':
         return render(request, 'signup.html', {'form': UserCreationForm()})
     else:
@@ -60,13 +56,9 @@ def signup_user(request):
             return render(request, 'signup.html', {'form': UserCreationForm(), 'error': 'Паролі не співпадають'})
 
 
+# simple login form
+# template 'login.html'
 def login_user(request):
-    """
-    simple login form
-    template 'login.html'
-    :param request:
-    :return:
-    """
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -79,19 +71,16 @@ def login_user(request):
     return render(request, 'login.html')
 
 
+# logout function
 def logout_user(request):
     if request.method == 'POST':
         logout(request)
         return redirect('homepage')
 
 
+# render profile page where user can change profile info (
+# first_name, last_name, email (username))
 def user_profile_view(request):
-    """
-    render profile page where user can change profile info (
-    first_name, last_name, email (username))
-    :param request:
-    :return:
-    """
     template_name = 'profile.html'
 
     if request.method == 'POST':
@@ -114,6 +103,7 @@ def user_profile_view(request):
     return render(request, template_name, {'form': form})
 
 
+# method for creating history list for page
 def history_view(request):
     phone_objects = PhoneModel.objects.all()
     tmp_view_history = request.session.get('view_history')
@@ -132,15 +122,17 @@ def main_page(request):
     return redirect('homepage')
 
 
+# paginator for catalog page
 def catalog_paginator(request, general_array):
     page = request.GET.get('page')
     if page is None:
         page = 1
-    per_page = 6
+    per_page = 9
     paginator = Paginator(general_array, per_page)
     return paginator.page(page)
 
 
+# Append triggers for objects in goods list
 def home_manager(request, phone_objects, tmp_session):
     tmp_array = []
     out_of_stock_list = []
@@ -168,18 +160,13 @@ def home_manager(request, phone_objects, tmp_session):
     return tmp_array
 
 
+# homepage view | creates session if not created yet
+# create simple paginator
+# render 2 objects:
+# session_phones (list of all elements (phones) in session,
+# general_array (paginator object that also contains data from phones table
+# and trigger for purchase button)
 def homepage(request):
-    """
-    homepage view | creates session if not created yet
-    create simple paginator
-    render 2 objects:
-    session_phones (list of all elements (phones) in session,
-    general_array (paginator object that also contains data from phones table
-    and trigger for purchase button)
-    :param request:
-    :return:
-    """
-
     tmp_phone_objects = get_curl('http://127.0.0.1:8000/api/v1/testlist/')
 
     print(tmp_phone_objects)
@@ -205,6 +192,7 @@ def homepage(request):
     return render(request, 'home.html', context)
 
 
+#
 def phone_category_brand(request, cat):
     cat_obj = PhoneCategoryModel.objects.get(cat_url=cat)
     phone_objects = PhoneModel.objects.filter(phone_cat_id=cat_obj.cat_id)
@@ -218,15 +206,10 @@ def phone_category_brand(request, cat):
     return render(request, 'phone_categories.html', {'general_array': phones_paginator, 'view_history': view_history})
 
 
+# render page of specific item by phone_id
+# with trigger for purchase button
+# create view history in session
 def view_phone(request, phone_id):
-    """
-    render page of specific item by phone_id
-    with trigger for purchase button
-    create view history in session
-    :param request:
-    :param phone_id:
-    :return:
-    """
     phone_post = get_object_or_404(PhoneModel, pk=phone_id)
     phone_id_item = str(phone_post.phone_id)
     tmp_session = request.session.get('picked_item')
@@ -260,17 +243,13 @@ def view_phone(request, phone_id):
                                                    'view_history': view_history})
 
 
+# append detail of picked phone item to session if it doesn't exist already
+# and make redirect with data to get_cart() function
+# elements of request.session.get('picked_item') contains:
+# id, name, price, date, count, trigger for plus/minus button
+# change trigger to active (cart_item[5] = 'disabled') in case if
+# there is only 1 item in table phones left
 def cart(request):
-    """
-    append detail of picked phone item to session if it doesn't exist already
-    and make redirect with data to get_cart() function
-    elements of request.session.get('picked_item') contains:
-    id, name, price, date, count, trigger for plus/minus button
-    change trigger to active (cart_item[5] = 'disabled') in case if
-    there is only 1 item in table phones left
-    :param request:
-    :return:
-    """
     request.session.get('picked_item')
 
     goods_in_cart = request.session.get('picked_item')
@@ -303,15 +282,11 @@ def cart(request):
     return redirect('/get_cart')
 
 
+# render cart page with data from session (request.session.get('picked_item'))
+# renders 3 objects in context:
+# goods_in_cart (items of cart), total_cost (total price of elements in cart),
+# cart_disabler (trigger for to order button)
 def get_cart(request):
-    """
-    render cart page with data from session (request.session.get('picked_item'))
-    renders 3 objects in context:
-    goods_in_cart (items of cart), total_cost (total price of elements in cart),
-    cart_disabler (trigger for to order button)
-    :param request:
-    :return:
-    """
     total_cost = 0
     # CLEAN SESSION IN CASE IF NEEDED
     # request.session['picked_item'] = ''
@@ -330,12 +305,8 @@ def get_cart(request):
                                          'cart_disabler': cart_disabler})
 
 
+# button to delite specific item from cart by id and redirect to get_cart view
 def delete_item_in_cart(request):
-    """
-    button to delite specific item from cart by id and redirect to get_cart view
-    :param request:
-    :return:
-    """
     tmp_session_del = request.session.get('picked_item')
     for cart_item in tmp_session_del:
         if str(cart_item[0]) == request.POST.get('id'):
@@ -346,14 +317,10 @@ def delete_item_in_cart(request):
     return redirect('get_cart')
 
 
+# button to increase amount in cart of specific item
+# add trigger (cart_item[5] = 'disabled') for disabling plus button
+# in case if there is no more items in table phones
 def plus_button_in_cart(request):
-    """
-    button to increase amount in cart of specific item
-    add trigger (cart_item[5] = 'disabled') for disabling plus button
-    in case if there is no more items in table phones
-    :param request:
-    :return:
-    """
     tmp_session_plus = request.session.get('picked_item')
     print(tmp_session_plus)
     for cart_item in tmp_session_plus:
@@ -372,14 +339,10 @@ def plus_button_in_cart(request):
     return redirect('get_cart')
 
 
+# button to reduce amount in cart of specific item
+# delete trigger (cart_item[5] = '') for disabling plus button
+# in case if there is still items in table phones
 def minus_button_in_cart(request):
-    """
-    button to reduce amount in cart of specific item
-    delete trigger (cart_item[5] = '') for disabling plus button
-    in case if there is still items in table phones
-    :param request:
-    :return:
-    """
     tmp_session_minus = request.session.get('picked_item')
     for cart_item in tmp_session_minus:
         if str(cart_item[0]) == request.POST.get('id'):
@@ -398,25 +361,17 @@ def minus_button_in_cart(request):
     return redirect('get_cart')
 
 
+# clear all cart session
 def clear_cart(request):
-    """
-    clear all cart session
-    :param request:
-    :return:
-    """
     request.session['picked_item'] = []
     return redirect('get_cart')
 
 
+# takes all items from cart (session),
+# create billings and baskets objects and fill them with data from cart,
+# send billing_id to session (request.session['billing_item'] = billing.billing_id),
+# clear all cart (session) and redirect 'to_order'
 def finish_order(request):
-    """
-    takes all items from cart (session),
-    create billings and baskets objects and fill them with data from cart,
-    send billing_id to session (request.session['billing_item'] = billing.billing_id),
-    clear all cart (session) and redirect 'to_order'
-    :param request:
-    :return:
-    """
     tmp_session_order = request.session['picked_item']
     if tmp_session_order == []:
         return redirect('get_cart')
@@ -429,7 +384,6 @@ def finish_order(request):
             billing.save()
 
             for basket_item in tmp_session_order:  # here creates and save basket
-                # example: basket_item ['4', 'Xiaomi 13T Pro', '640', '20 грудня 2023 р. 12:46', 1]
                 phone_name = basket_item[1]
                 phone_price = basket_item[2]
                 phone_id = basket_item[0]
@@ -445,17 +399,12 @@ def finish_order(request):
             return redirect('to_order')
 
 
+# render 'to_order.html' this page for using finalising order
+# and fills the form with already existing information
+# if user is not authenticated redirects to confirm_order_non_register_user view
+# context: ordering_items (cart items), final_price (total cart price),
+# bill_id (billing_id), form
 def to_order(request):  # send items from cart to "to_order" page
-    """
-    render 'to_order.html' this page for using finalising order
-    and fills the form with already existing information
-    if user is not authenticated redirects to confirm_order_non_register_user view
-    context: ordering_items (cart items), final_price (total cart price),
-    bill_id (billing_id), form
-    :param request:
-    :return:
-    """
-
     bill_id = request.session.get('billing_item')
     ordering_items = []
     final_price = 0
@@ -482,14 +431,8 @@ def to_order(request):  # send items from cart to "to_order" page
                   {'ordering_items': ordering_items, 'final_price': final_price, 'bill_id': bill_id, 'form': form})
 
 
+# fills the order with relevant information
 def confirm_order_non_register_user(request, bill_id):
-    """
-    fills the order with relevant information
-
-    :param bill_id:,
-    :param request:
-    :return:
-    """
     tmp_detail_session = request.session['form_detail']
     Billings.objects.filter(billing_id=bill_id).update(billing_email=tmp_detail_session['email'],
                                                        billing_first_name=tmp_detail_session['first_name'],
@@ -503,14 +446,10 @@ def confirm_order_non_register_user(request, bill_id):
         return render(request, 'order_done.html', {'bill_id': bill_id})
 
 
+# render page with already created orders
+# page has is_staff restriction
+# each order can be opened with view_billing view
 def edit_page(request):
-    """
-    render page with already created orders
-    page has is_staff restriction
-    each order can be opened with view_billing view
-    :param request:
-    :return:
-    """
     if request.user.is_authenticated:
         username = request.user.username
     else:
@@ -529,14 +468,8 @@ def edit_page(request):
     return render(request, 'edit_page.html', {'is_staff': is_staff})
 
 
+# page for view contents of existing orders
 def view_billing(request, billing_id):
-    """
-    UNFINISHED
-    page for view contents of existing orders
-    :param request:
-    :param billing_id:
-    :return:
-    """
     full_basket = Baskets.objects.all()
     basket_array = []
     basket_num = 1
