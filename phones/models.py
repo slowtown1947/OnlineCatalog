@@ -4,21 +4,6 @@ from django.db import models
 from ckeditor.fields import RichTextField
 
 
-# # Модель класу для розширення стандартної моделі користувача
-# class UserProfile(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     phone_number = models.CharField(max_length=15, blank=True, null=True)
-#     address = models.TextField(blank=True, null=True)
-#
-#     def __str__(self):
-#         return self.user.username
-
-
-# class TelegramChat(models.Model):
-#     telegram_id = models.IntegerField(unique=True)
-#     user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
-
-
 class Baskets(models.Model):
     basket_id = models.BigAutoField(primary_key=True)
     goods_name = models.CharField(max_length=50, blank=True, null=True)
@@ -64,6 +49,7 @@ class PhoneCategoryModel(models.Model):
     cat_url = models.CharField(max_length=100, verbose_name='Посилання', blank=True, null=True)
 
     class Meta:
+        db_table = 'phone_category'
         verbose_name = 'Категорії'
         verbose_name_plural = 'Категорії'
 
