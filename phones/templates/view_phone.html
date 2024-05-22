@@ -92,7 +92,7 @@
                 border-radius: 8px;
             }
 
-            /* Покращення вигляду історії перегляду товарів */
+            /* Improved appearance of the viewed items history */
             .view-history-container {
                 display: flex;
                 overflow-x: auto;
@@ -100,13 +100,13 @@
             }
 
             .view-history-item {
-                flex: 0 0 calc(20% - 20px); /* 5 товарів в рядку, з відступом 20px між ними */
+                flex: 0 0 calc(20% - 20px); /* 5 items per row with 20px gap */
                 margin-right: 20px;
                 box-sizing: border-box;
             }
 
             .view-history-item:last-child {
-                margin-right: 0; /* Видаляємо відступ для останнього елемента */
+                margin-right: 0; /* Remove margin for the last item */
             }
 
             .view-history-item img {
@@ -164,15 +164,15 @@
                         <button class="btn btn-buy mr-2" type="submit"
                                 {{ buy_button_trigger }}{{ out_of_stock_disabler }}>
                             {% if buy_button_trigger == 'disabled' %}
-                                Товар уже в корзині
+                                Item already in cart
                             {% elif out_of_stock_disabler == 'disabled' %}
-                                Немає в наявності
+                                Out of stock
                             {% else %}
-                                Купити
+                                Buy
                             {% endif %}
                         </button>
                     </form>
-                    <a href="{% url 'get_cart' %}" class="btn btn-cart btn-back">Перейти в корзину</a>
+                    <a href="{% url 'get_cart' %}" class="btn btn-cart btn-back">Go to Cart</a>
                 </div>
             </div>
         </div>
@@ -186,7 +186,7 @@
     </div>
     </body>
 
-    <h2>Переглянуті товари</h2>
+    <h2>Viewed Items</h2>
     <div class="view-history-container">
         {% for vhistory_object in view_history %}
             <div class="view-history-item">
@@ -198,7 +198,7 @@
                         {{ vhistory_object.phone_name }}
                     </a><br>
                     {{ vhistory_object.phone_price }} €<br>
-                    <!-- Додайте будь-яку іншу відомості, яку ви хочете відобразити -->
+                    <!-- Add any other information you want to display -->
                 </p>
             </div>
         {% endfor %}

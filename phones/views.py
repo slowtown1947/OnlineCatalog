@@ -51,9 +51,10 @@ def signup_user(request):
                 return redirect('homepage')
             except IntegrityError:
                 return render(request, 'signup.html',
-                              {'form': UserCreationForm(), 'error': "Це ім'я користувача вже використовується"})
+                              {'form': UserCreationForm(), 'error': "This username is already taken"})
         else:
-            return render(request, 'signup.html', {'form': UserCreationForm(), 'error': 'Паролі не співпадають'})
+            return render(request, 'signup.html',
+                          {'form': UserCreationForm(), 'error': 'Passwords do not match'})
 
 
 # simple login form
@@ -67,7 +68,7 @@ def login_user(request):
             login(request, user)
             return redirect('homepage')
         else:
-            messages.error(request, "Неправильне ім'я користувач або пароль.")
+            messages.error(request, "Invalid username or password.")
     return render(request, 'login.html')
 
 
@@ -91,7 +92,7 @@ def user_profile_view(request):
             request.user.email = form.cleaned_data['email']
             request.user.username = form.cleaned_data['email']
             request.user.save()
-            messages.success(request, 'Зміни збережено успішно.')
+            messages.success(request, 'Changes saved successfully.')
             return redirect('homepage')
     else:
         form = UserProfileForm(initial={
@@ -238,7 +239,8 @@ def view_phone(request, phone_id):
     else:
         out_of_stock_disabler = ''
     if request.method == 'GET':
-        return render(request, 'view_phone.html', {'phone_post': phone_post, 'buy_button_trigger': buy_button_trigger,
+        return render(request, 'view_phone.html', {'phone_post': phone_post,
+                                                   'buy_button_trigger': buy_button_trigger,
                                                    'out_of_stock_disabler': out_of_stock_disabler,
                                                    'view_history': view_history})
 

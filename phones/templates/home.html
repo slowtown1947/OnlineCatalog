@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description">
-    <title>Каталог | Головна</title>
+    <title>Catalog | Home</title>
     <style>
         body {
             background-color: #343a40;
@@ -54,32 +54,30 @@
             justify-content: space-between;
         }
 
-            .list-group-item {
-        width: calc(33.33% - 20px);
-        margin-bottom: 20px;
-                border-radius: 8px;
-        background-color: #454d55;
-        transition: background-color 0.3s;
-        position: relative;
-        color: #fff;
-                /* Increased padding at the bottom */
-                padding: 15px 15px 100px;
-            }
+        .list-group-item {
+            width: calc(33.33% - 20px);
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #454d55;
+            transition: background-color 0.3s;
+            position: relative;
+            color: #fff;
+            padding: 15px 15px 100px; /* Increased padding at the bottom */
+        }
 
-    .btn-primary,
-    .btn_custom_success {
-        width: calc(100% - 30px);
-        position: absolute;
-        bottom: 15px;
-        left: 15px;
-        right: 15px;
-    }
+        .btn-primary,
+        .btn_custom_success {
+            width: calc(100% - 30px);
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+        }
 
-    .btn_custom_success {
-        bottom: 50px;
-        margin-bottom: 10px;
-    }
-
+        .btn_custom_success {
+            bottom: 50px;
+            margin-bottom: 10px;
+        }
 
         .btn-margin-right {
             margin-top: 10px;
@@ -159,11 +157,10 @@
             {% for phone_example in general_array %}
                 <div class="list-group-item">
                     {% if phone_example.0.phone_image %}
-
-                    <a href="{{ phone_example.0.get_absolute_url }}">
-                        <img src="{{ phone_example.0.phone_image.url }}" alt="img" class="img-fluid product-image">
-                    </a>
-                {% endif %}
+                        <a href="{{ phone_example.0.get_absolute_url }}">
+                            <img src="{{ phone_example.0.phone_image.url }}" alt="img" class="img-fluid product-image">
+                        </a>
+                    {% endif %}
                     <strong>ID:</strong> {{ phone_example.0.phone_id }}<br>
                     <strong>Name:</strong> {{ phone_example.0.phone_name }} <br>
                     <strong>Price:</strong> {{ phone_example.0.phone_price }} €<br>
@@ -171,7 +168,7 @@
 
                     <div class="mt-3">
                         <a role="button" class="btn btn-primary btn-margin-right"
-                            href="{{ phone_example.0.get_absolute_url }}">Сторінка телефону</a>
+                            href="{{ phone_example.0.get_absolute_url }}">Phone Page</a>
                         <form method="POST" action="{% url 'cart' %}" class="d-inline">
                             {% csrf_token %}
                             <input type="hidden" name="id" value="{{ phone_example.0.phone_id }}">
@@ -179,13 +176,13 @@
                             <input type="hidden" name="price" value="{{ phone_example.0.phone_price }}">
                             <input type="hidden" name="date" value="{{ phone_example.0.phone_date }}">
 
-                            <button class="btn_custom_success btn btn-success " type="submit" {{ phone_example.1 }}{{ phone_example.2 }}>
+                            <button class="btn_custom_success btn btn-success" type="submit" {{ phone_example.1 }}{{ phone_example.2 }}>
                                 {% if phone_example.2 == 'disabled'%}
-                                    Немає в наявності
+                                    Out of Stock
                                 {% elif phone_example.1 == 'disabled' %}
-                                    Товар вже в корзині
+                                    Already in Cart
                                 {% else %}
-                                    Купити
+                                    Buy
                                 {% endif %}
                             </button>
                         </form>
@@ -198,25 +195,24 @@
     <div class="pagination">
         <span class="step-links">
             {% if general_array.has_previous %}
-                <a href="?page=1">&laquo; Перша сторінка</a>
-                <a href="?page={{ general_array.previous_page_number }}">Минула сторінка</a>
+                <a href="?page=1">&laquo; First Page</a>
+                <a href="?page={{ general_array.previous_page_number }}">Previous Page</a>
             {% endif %}
 
             <span class="current">
-                Сторінка {{ general_array.number }} з {{ general_array.paginator.num_pages }}.
+                Page {{ general_array.number }} of {{ general_array.paginator.num_pages }}.
             </span>
 
             {% if general_array.has_next %}
-                <a href="?page={{ general_array.next_page_number }}">Наступна сторінка</a>
-                <a href="?page={{ general_array.paginator.num_pages }}">Остання сторінка &raquo;</a>
+                <a href="?page={{ general_array.next_page_number }}">Next Page</a>
+                <a href="?page={{ general_array.paginator.num_pages }}">Last Page &raquo;</a>
             {% endif %}
         </span>
     </div>
 
-    <!-- Історія перегляду товарів -->
-  <h2 style="margin-top: 20px;">Переглянуті <br>товари</h2>
+    <!-- Viewed Products History -->
+    <h2 style="margin-top: 20px;">Viewed Products</h2>
     <div class="view-history-container">
-
         {% for vhistory_object in view_history %}
             <div class="view-history-item">
                 <a href="{{ vhistory_object.get_absolute_url }}">
@@ -227,7 +223,7 @@
                         {{ vhistory_object.phone_name }}
                     </a><br>
                     {{ vhistory_object.phone_price }} €<br>
-                    <!-- Додайте будь-яку іншу відомість, яку ви хочете відобразити -->
+                    <!-- Add any other details you want to display -->
                 </p>
             </div>
         {% endfor %}

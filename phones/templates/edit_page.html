@@ -6,12 +6,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Замовлення</title>
-    <link rel="stylesheet" href="path/to/your/bootstrap/css/file.css"> <!-- Підключіть Bootstrap, якщо необхідно -->
+    <title>Orders</title>
+    <link rel="stylesheet" href="path/to/your/bootstrap/css/file.css"> <!-- Connect Bootstrap if necessary -->
     <style>
         body {
-
-            background-color: #343a40; /* Колір фону body */
+            background-color: #343a40; /* Background color of body */
             margin: 0;
         }
 
@@ -44,35 +43,33 @@
     <div class="order-container">
         {% for billing_object in billings_array %}
             <div class="order-item">
-                <strong>Номер замовлення: {{ billing_object.billing_id }}</strong>
+                <strong>Order Number: {{ billing_object.billing_id }}</strong>
 
-                <br>Статус:
+                <br>Status:
                 {% if billing_object.status_phone == 2 %}
-                    <strong>оформлено</strong>
+                    <strong>confirmed</strong>
                 {% elif billing_object.status_phone == 1 %}
-                    <strong>не оформлено</strong>
+                    <strong>not confirmed</strong>
                 {% elif billing_object.status_phone == 0 %}
-                    <strong>не активне</strong>
+                    <strong>inactive</strong>
                 {% endif %}
 
-                Ціна: <strong>{{ billing_object.full_price }}</strong><br>
-                Замовлення створено {{ billing_object.billing_date }} <br>
-                Ел. пошта: {{ billing_object.billing_email }} <br>
-                Ім'я та прізвище: {{ billing_object.billing_first_name }}
+                Price: <strong>{{ billing_object.full_price }}</strong><br>
+                Order created on {{ billing_object.billing_date }} <br>
+                Email: {{ billing_object.billing_email }} <br>
+                First and Last Name: {{ billing_object.billing_first_name }}
                 {{ billing_object.billing_second_name }}<br>
-                Номер телефону: {{ billing_object.billing_phone_number }}<br>
-                Адрес: {{ billing_object.billing_address }}<br> <br>
+                Phone Number: {{ billing_object.billing_phone_number }}<br>
+                Address: {{ billing_object.billing_address }}<br> <br>
                 <a role="button" class="btn btn-primary btn-margin-right"
-                   href="/view_billing/{{ billing_object.billing_id }}">Перейти до деталей</a><br>
+                   href="/view_billing/{{ billing_object.billing_id }}">View Details</a><br>
 
                 <div class="order-actions">
-                    <!-- Додайте будь-які інші дії або кнопки для виконання дій замовлення -->
+                    <!-- Add any other actions or buttons for order operations -->
                 </div>
             </div>
         {% endfor %}
     </div>
-{% else %}
-    NOT HI
 {% endif %}
 
 </body>

@@ -3,7 +3,7 @@
 {% block content %}
     <head>
         <meta charset="UTF-8">
-        <title>Оформлення замовлення</title>
+        <title>Order Confirmation</title>
         <style>
             body {
                 background-color: #343a40; /* Set dark background color */
@@ -38,10 +38,10 @@
     </head>
 
     <body>
-        <h1>Замовлення пройшло успішно!<br> Номер вашого замовлення: <strong>{{ bill_id }}</strong></h1>
+        <h1>Your order has been successfully placed!<br> Your order number: <strong>{{ bill_id }}</strong></h1>
 
         <div class="return-button-container">
-            <a href="{% url 'homepage' %}" class="return-button">Повернутися до головної сторінки</a>
+            <a href="{% url 'homepage' %}" class="return-button">Return to Homepage</a>
         </div>
     </body>
 {% endblock %}

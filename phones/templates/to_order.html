@@ -1,107 +1,107 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <head>
-        <meta charset="UTF-8">
-        <title>Оформлення замовлення</title>
-        <style>
-            /* Загальні стилі */
-            body {
-                background-color: #343a40; /* Темний фон */
-                font-family: Arial, sans-serif;
-                color: #fff;
-                margin: 0;
-                padding: 0;
-            }
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+    <style>
+        /* General styles */
+        body {
+            background-color: #343a40; /* Dark background */
+            font-family: Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
 
-            h1 {
-                color: #fff;
-            }
+        h1 {
+            color: #fff;
+        }
 
-            /* Стилі для форми замовлення */
-            .order-form {
-                border: 1px solid #ccc;
-                padding: 20px;
-                border-radius: 5px;
-                background-color: #2c3036; /* Темний фон для форми */
-                margin-top: 20px;
-                max-width: 600px; /* Максимальна ширина форми */
-                margin-left: auto;
-                margin-right: auto;
-            }
+        /* Styles for the order form */
+        .order-form {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #2c3036; /* Dark background for the form */
+            margin-top: 20px;
+            max-width: 600px; /* Maximum form width */
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-            .btn-submit {
-                padding: 10px 20px;
-                background-color: #007bff;
-                color: #fff;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                margin-top: 10px;
-            }
+        .btn-submit {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
 
-            .btn-submit:hover {
-                background-color: #0056b3; /* Зміна кольору при наведенні */
-            }
+        .btn-submit:hover {
+            background-color: #0056b3; /* Color change on hover */
+        }
 
-            /* Стилі для полів форми */
-            .form-group {
-                margin-bottom: 15px;
-            }
+        /* Styles for form fields */
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-            label {
-                display: block;
-                margin-bottom: 5px;
-            }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
 
-            input {
-                width: 100%;
-                padding: 8px;
-                box-sizing: border-box;
-                border: 1px solid #777; /* Сірий колір границі */
-                border-radius: 5px;
-                background-color: #2c3036; /* Сірий фон */
-                color: #fff; /* Білий колір тексту */
-            }
-        </style>
-    </head>
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #777; /* Gray border color */
+            border-radius: 5px;
+            background-color: #2c3036; /* Gray background */
+            color: #fff; /* White text color */
+        }
+    </style>
+</head>
 
-    <body>
-        <h1>Оформлення замовлення</h1>
+<body>
+    <h1>Order Confirmation</h1>
 
-        <div class="order-form">
-            <h2>Ваше замовлення:</h2>
-            <ul>
-                {% for item in ordering_items %}
-                    <li>{{ item.0.goods_name }} - {{ item.0.goods_count }} шт. Ціна: {{ item.1 }} грн.</li>
-                {% endfor %}
-            </ul>
+    <div class="order-form">
+        <h2>Your Order:</h2>
+        <ul>
+            {% for item in ordering_items %}
+                <li>{{ item.0.goods_name }} - {{ item.0.goods_count }} pcs. Price: {{ item.1 }} UAH.</li>
+            {% endfor %}
+        </ul>
 
-            <!-- Форма для введення даних про замовлення -->
-            <form method="POST" action="">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
-                    <input type="first_name" id="{{ form.first_name.id_for_label }}" name="{{ form.first_name.name }}" value="{{ user.first_name }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
-                    <input type="last_name" id="{{ form.last_name.id_for_label }}" name="{{ form.last_name.name }}" value="{{ user.last_name }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
-                    <input type="email" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}" value="{{ user.email }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
-                    <input type="phone" id="{{ form.phone.id_for_label }}" name="{{ form.phone.name }}" value="{{ user.phone }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
-                    <input type="address" id="{{ form.address.id_for_label }}" name="{{ form.address.name }}" value="{{ user.address }}" required>
-                </div>
-                <button type="submit" class="btn-submit">Підтвердити замовлення</button>
-            </form>
-        </div>
-    </body>
+        <!-- Form for entering order details -->
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                <input type="text" id="{{ form.first_name.id_for_label }}" name="{{ form.first_name.name }}" value="{{ user.first_name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                <input type="text" id="{{ form.last_name.id_for_label }}" name="{{ form.last_name.name }}" value="{{ user.last_name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                <input type="email" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}" value="{{ user.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+                <input type="tel" id="{{ form.phone.id_for_label }}" name="{{ form.phone.name }}" value="{{ user.phone }}" required>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
+                <input type="text" id="{{ form.address.id_for_label }}" name="{{ form.address.name }}" value="{{ user.address }}" required>
+            </div>
+            <button type="submit" class="btn-submit">Confirm Order</button>
+        </form>
+    </div>
+</body>
 {% endblock %}

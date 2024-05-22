@@ -2,10 +2,10 @@
 
 {% block content %}
     <head>
-    <title>Корзина</title>
+    <title>Cart</title>
     </head>
     <style>
-        /* Общие стили */
+        /* General styles */
         body {
             background-color: #343a40;
             font-family: 'Arial', sans-serif;
@@ -13,30 +13,30 @@
         }
 
         .custom-card-body {
-            background-color: #808080; /* Сірий колір */
+            background-color: #808080; /* Gray color */
         }
     </style>
 
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Ваша Корзина</h1>
+        <h1 class="text-center mb-4">Your Cart</h1>
 
         <!-- Clear cart button -->
         <form method="POST" action="{% url 'clear_cart' %}" class="mb-4">
             {% csrf_token %}
-            <button class="btn btn-danger">Очистити корзину</button>
+            <button class="btn btn-danger">Clear Cart</button>
         </form>
 
         <!-- Items in the cart -->
         {% for item in goods_in_cart %}
             <div class="card mb-4">
-                <div class="card-body custom-card-body"> <!-- Додано клас custom-card-body -->
+                <div class="card-body custom-card-body"> <!-- Added class custom-card-body -->
                     <table class="table table-dark">
                         <tbody>
                         <tr>
                             <td>id: {{ item.0 }}</td>
                             <td>{{ item.1 }}</td>
-                            <td>Ціна: {{ item.2 }} €</td>
-                            <td>Кількість: {{ item.4 }}</td>
+                            <td>Price: {{ item.2 }} €</td>
+                            <td>Quantity: {{ item.4 }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -51,20 +51,20 @@
                                 <button class="btn btn-success" {{ item.5 }}>
                                     {% if item.5 == 'disabled' %}
 
-                                        Більше немає на складі{% else %}Додати{% endif %}</button>
+                                        Out of stock{% else %}+{% endif %}</button>
                             </form>
 
                             <form method="POST" action="{% url 'minus_button_in_cart' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="id" value="{{ item.0 }}">
-                                <button class="btn btn-warning ml-2">Відняти</button>
+                                <button class="btn btn-warning ml-2">-</button>
                             </form>
                         </div>
 
                         <form method="POST" action="{% url 'delete_item_in_cart' %}">
                             {% csrf_token %}
                             <input type="hidden" name="id" value="{{ item.0 }}">
-                            <button class="btn btn-danger">Видалити</button>
+                            <button class="btn btn-danger">Delete</button>
                         </form>
                     </div>
                 </div>
@@ -73,16 +73,15 @@
 
         <!-- Total cost and Order button -->
         <div class="mb-4">
-            <span><strong>Всього: {{ total_cost }} €</strong></span>
-            <span style="margin-left: 10px;"></span> <!-- Добавленный пробел -->
+            <span><strong>Total: {{ total_cost }} €</strong></span>
+            <span style="margin-left: 10px;"></span> <!-- Added space -->
             <form method="POST" action="{% url 'finish_order' %}" style="display: inline-block;">
                 {% csrf_token %}
                 <button class="btn btn-success ml-2" {{ cart_disabler }}>{% if cart_disabler == 'disabled' %}
-                    Корзина пуста{% else %}Оформити замовлення{% endif %}</button>
+                    Cart is empty{% else %}Place Order{% endif %}</button>
             </form>
         </div>
 
     </div><br><br><br>
-
 
 {% endblock %}

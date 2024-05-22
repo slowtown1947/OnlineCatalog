@@ -2,17 +2,17 @@
 
 {% block content %}
     <head>
-    <title>Особистий кабінет</title>
+    <title>Personal Cabinet</title>
     </head>
     <style>
         body {
-            background-color: #343a40; /* Темний фон */
+            background-color: #343a40; /* Dark background */
             font-family: 'Arial', sans-serif;
             color: #fff;
         }
 
         .card {
-            background-color: #2c3036; /* Фон карточки */
+            background-color: #2c3036; /* Card background */
             color: #fff;
         }
 
@@ -27,7 +27,7 @@
         }
 
         .form-group {
-            margin-bottom: 1.5rem; /* Відступ між елементами форми */
+            margin-bottom: 1.5rem; /* Spacing between form elements */
         }
 
         label {
@@ -35,32 +35,32 @@
         }
 
         input {
-            background-color: #ddd; /* Сірий колір поля форми */
-            color: #333; /* Колір тексту у полі форми */
-            border: 1px solid #ccc; /* Рамка навколо поля форми */
-            border-radius: 4px; /* Закруглені кути поля форми */
-            padding: 8px; /* Подушка вокруг тексту в полі форми */
-            width: 100%; /* Ширина поля форми на всю ширину контейнера */
+            background-color: #ddd; /* Gray color for form field */
+            color: #333; /* Text color in form field */
+            border: 1px solid #ccc; /* Border around form field */
+            border-radius: 4px; /* Rounded corners of form field */
+            padding: 8px; /* Padding around text in form field */
+            width: 100%; /* Form field width to fill container */
         }
 
         .btn-primary {
-            background-color: #007bff; /* Колір кнопки */
+            background-color: #007bff; /* Button color */
             color: #fff;
         }
 
         .btn-primary:hover {
-            background-color: #0056b3; /* Зміна кольору при наведенні на кнопку */
+            background-color: #0056b3; /* Change color on hover */
         }
 
         .text-danger {
-            color: #dc3545; /* Колір тексту помилки */
+            color: #dc3545; /* Error text color */
         }
     </style>
 
     <div class="container mt-5">
         <div class="card">
             <div class="card-body">
-                <h2 class="card-title mb-4">Особистий кабінет</h2>
+                <h2 class="card-title mb-4">Personal Cabinet</h2>
 
                 <div class="form-container col-md-6">
                     <form method="post" action="#">
@@ -78,7 +78,7 @@
                             </div>
                         {% endfor %}
 
-                        <button type="submit" class="btn btn-primary">Зберегти зміни</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </form>
                 </div>
             </div>
