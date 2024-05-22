@@ -170,7 +170,7 @@ def home_manager(request, phone_objects, tmp_session):
 def homepage(request):
     tmp_phone_objects = get_curl('http://127.0.0.1:8000/api/v1/testlist/')
 
-    print(tmp_phone_objects)
+    # print(tmp_phone_objects)
 
     phone_objects = PhoneModel.objects.all()
 
@@ -193,18 +193,38 @@ def homepage(request):
     return render(request, 'home.html', context)
 
 
-#
+# sort by category (phone brand) func
+# render phone_categories.html with 2 objects:
+# general_array (searched objects) and view_history
 def phone_category_brand(request, cat):
     cat_obj = PhoneCategoryModel.objects.get(cat_url=cat)
     phone_objects = PhoneModel.objects.filter(phone_cat_id=cat_obj.cat_id)
+
     tmp_session = request.session.get('picked_item')
-
     phone_objects = home_manager(request, phone_objects, tmp_session)
-
     phones_paginator = catalog_paginator(request, phone_objects)
-
     view_history = history_view(request)
+
     return render(request, 'phone_categories.html', {'general_array': phones_paginator, 'view_history': view_history})
+
+
+# search bar in navbar func
+# __icontains search for every possible match including lower and upper case
+# render searched_goods.html with 2 objects:
+# general_array (searched objects) and view_history
+def search_goods(request):
+    view_history = history_view(request)
+    if request.method == 'POST':
+        searched_good = request.POST['searched_good']
+        phone_objects = PhoneModel.objects.filter(phone_name__icontains=searched_good)
+
+        tmp_session = request.session.get('picked_item')
+        phone_objects = home_manager(request, phone_objects, tmp_session)
+        phones_paginator = catalog_paginator(request, phone_objects)
+
+        return render(request, 'searched_goods.html', {'general_array': phones_paginator, 'view_history': view_history})
+    else:
+        return render(request, 'searched_goods.html', {'general_array': '', 'view_history': view_history})
 
 
 # render page of specific item by phone_id
@@ -493,5 +513,6 @@ def page_generator(request, page_url):
     return render(request, 'page_blanket.html', {'page': page_object})
 
 
+# test view
 def test_view(request):
     return HttpResponse('hi')

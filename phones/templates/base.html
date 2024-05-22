@@ -65,6 +65,10 @@
             border-radius: 4px;
         }
 
+        #unique-navbar .btn-outline-light {
+            border-color: #fff;
+        }
+
         .unique-footer {
             background-color: #343a40;
             color: #fff;
@@ -111,38 +115,43 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto d-flex align-items-center">
-
             {% if user.is_authenticated and request.user.is_staff %}
-                <li class="nav-item mr-2">
-                    <a href="{% url 'edit_page' %}" class="btn btn-info btn-back">Orders</a>
-                </li>
+            <li class="nav-item mr-2">
+                <form class="form-inline my-2 my-lg-0" method="POST" action="{% url 'search_goods' %}">
+                    {% csrf_token %}
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+                           name="searched_good">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </li>
+            <li class="nav-item mr-2">
+                <a href="{% url 'edit_page' %}" class="btn btn-info btn-back">Orders</a>
+            </li>
             {% endif %}
-
             <li class="nav-item mr-2">
                 <a href="{% url 'get_cart' %}" class="btn btn-orange btn-back">Go to Cart</a>
             </li>
-
             {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a href="{% url 'profile' %}" class="btn btn-secondary">{{ user.username }}</a>
-                </li>
-                <li class="nav-item">
-                    <form action="{% url 'logout_user' %}" method="POST" class="nav-link">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Logout</button>
-                    </form>
-                </li>
+            <li class="nav-item">
+                <a href="{% url 'profile' %}" class="btn btn-secondary">{{ user.username }}</a>
+            </li>
+            <li class="nav-item">
+                <form action="{% url 'logout_user' %}" method="POST" class="nav-link">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+            </li>
             {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login_user' %}">
-                        <button class="btn btn-success">Login</button>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'signup_user' %}">
-                        <button class="btn btn-info">Sign Up</button>
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login_user' %}">
+                    <button class="btn btn-success">Login</button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'signup_user' %}">
+                    <button class="btn btn-info">Sign Up</button>
+                </a>
+            </li>
             {% endif %}
         </ul>
     </div>
@@ -150,7 +159,7 @@
 
 <div class="container mt-4 unique-container">
     {% block content %}
-        <!-- Content of each page extending this template will be here -->
+    <!-- Content of each page extending this template will be here -->
     {% endblock %}
 </div>
 
@@ -158,11 +167,9 @@
 <footer class="unique-footer">
     <div class="unique-container">
         {% for page in pages %}
-            <a href="{% url 'page_generator' page.page_url %}">{{ page.page_name }}</a>
+        <a href="{% url 'page_generator' page.page_url %}">{{ page.page_name }}</a>
         {% endfor %}
-
         <p>&copy; 2024 Online Catalog. All rights reserved.</p>
-
     </div>
 </footer>
 

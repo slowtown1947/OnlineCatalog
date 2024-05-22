@@ -43,6 +43,8 @@ urlpatterns = [
     path('view_billing/<int:billing_id>/', views.view_billing, name='view_billing'),
     path('pages/<slug:page_url>', views.page_generator, name='page_generator'),
     path('phones/<slug:cat>', views.phone_category_brand, name='phone_category_brand'),
+    path('search_goods', views.search_goods, name='search_goods'),
+
     path('test_view/', views.test_view, name='test_view'),
 
 
