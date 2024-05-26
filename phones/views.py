@@ -236,9 +236,10 @@ def view_phone(request, phone_id):
     tmp_session = request.session.get('picked_item')
     buy_button_trigger = ''
 
-    for item_in_session in tmp_session:
-        if item_in_session[0] == phone_id_item:
-            buy_button_trigger = 'disabled'
+    if request.session.get('view_history'):      # may give an error!
+        for item_in_session in tmp_session:
+            if item_in_session[0] == phone_id_item:
+                buy_button_trigger = 'disabled'
     if request.session.get('view_history') == [] or request.session.get('view_history') is None:
         request.session['view_history'] = [phone_id]
     elif len(request.session.get('view_history')) <= 4:
