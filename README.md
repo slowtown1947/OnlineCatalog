@@ -1,39 +1,41 @@
-My student project about Django and DRF basic knowledge.
-This project is simple online catalog for any goods you want.
-Also contains telegram bot for checking orders info and creating new orders.
+# OnlineCatalog
 
-Run with:
-python manage.py runserver & python bot.py
+## Description
+OnlineCatalog is a simple online catalog (market) of smartphones. The project also includes a Telegram bot for checking order information and creating new orders.
 
-Project is hosted by link:
-http://slowtown.pythonanywhere.com
-And telegram bot is hosted:
-https://t.me/OnlineCatal0g_bot
+## Demo
+- Web Application: [OnlineCatalog](http://slowtown.pythonanywhere.com)
+- Telegram Bot: [OnlineCatalog Bot](https://t.me/OnlineCatal0g_bot)
 
-OnlineCart sample application
-Setup
+## Installation
 
+### Step 1: Clone the repository
 The first thing to do is to clone the repository:
 
+```sh
 $ git clone https://github.com/slowtown1947/OnlineCatalog
 $ cd OnlineCatalog
+```
 
+### Step 2: Create a virtual environment
 Create a virtual environment to install dependencies in and activate it:
 
-$ virtualenv2 --no-site-packages env
+```sh
+$ virtualenv --no-site-packages env
 $ source env/bin/activate
+```
 
+### Step 3: Install dependencies
 Then install the dependencies:
 
+```sh
 (env)$ pip install -r requirements.txt
+```
 
-Note the (env) in front of the prompt. This indicates that this terminal session operates in a virtual environment.
+### Step 4: Configure the database
+To run the project, you need to install MySQL on your computer and create an empty database. Then, edit the OnlineCatalog/settings.py file to fill the DATABASES section with the necessary information:
 
-Once pip has finished downloading the dependencies:
-
-To run the project you need to install mysql to your computer and create empty database.
-Then go to OnlineCatalog/settings.py and fix the database part so that it is filled with the information you need.
-
+```python
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -44,17 +46,19 @@ DATABASES = {
         'PORT': '3306',  # or the port on which your MySQL server is listening
     }
 }
+```
 
-After that you need to make migrations and migrate them by following this commands
+### Step 5: Apply migrations
+After that, you need to make migrations and migrate them by following these commands:
 
+```sh
 (env)$ python manage.py makemigrations
 (env)$ python manage.py migrate
+```
 
-After that you can runserver by this command
+### Step 6: Run the server
+After that, you can run the server and the Telegram bot:
 
+```sh
 (env)$ python manage.py runserver & python bot.py
-
-And navigate to http://127.0.0.1:8000.
-
-
-
+```
