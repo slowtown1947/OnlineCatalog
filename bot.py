@@ -5,6 +5,19 @@ import certifi
 from io import BytesIO
 import webbrowser
 import json
+import logging
+
+# logger setup
+logging.basicConfig(level=logging.DEBUG, filename='tbot.log', format='%(levelname)s (%(asctime)s): %(message)s (Line: %(lineno)d) [%(filename)s]', datefmt='%d/%m/%Y %I:%M:%S',
+                    encoding='utf-8', filemode='w')
+
+
+logger = logging.getLogger(__name__)
+handler = logging.FileHandler('tgbot.log', encoding='utf-8')
+formatter = logging.Formatter('%(levelname)s (%(asctime)s): %(message)s (Line: %(lineno)d) [%(filename)s]')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
 
 bot = telebot.TeleBot("#")
 
@@ -98,10 +111,14 @@ def order_by_number_callback(message):
     info_json = json.loads(bill_info)
     print(info_json)
     response = "Your order(s):\n\n"
+    tmp_order_info = ''
     for order_info in info_json:
         response += f"Order number: {order_info['billing_id']}\nOrder cost: {order_info['full_price']}" \
                    f"\nOrder status: {status_dict.get(order_info['status_phone'])}\n\n"
+        tmp_order_info += str(order_info['billing_id']) + ', '
+    logger.info(f'requested info for order (phone {str(message.text)}): {tmp_order_info[:-2]}')
     bot.send_message(message.chat.id, response)
+
     main(message)
 
 
@@ -141,6 +158,7 @@ def create_order_callback(message):
     btn_finish_cart = types.InlineKeyboardButton('Place order', callback_data='finish_cart')
     btn_review = types.InlineKeyboardButton('View products', callback_data='review_shopping_list')
     # print(cart_dict_id)
+
 
     if cart_dict_id == {}:
         markup.add(btn_add_goods, btn_remove_goods)
@@ -281,6 +299,8 @@ def confirm_order(message):
     print(json_data)
     post_curl(json_data, f'{main_link}api/v1/testbill/')
     print(final_data['billing_phone_number'])
+
+    logger.info(f'confirmed order: {json_data}')
 
     bot.send_message(message,
                      f"Your order has been successfully placed.")
