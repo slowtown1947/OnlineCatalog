@@ -195,7 +195,7 @@ def homepage(request):
 
 # sort by category (phone brand) func
 # render phone_categories.html with 2 objects:
-# general_array (searched objects) and view_history
+# general_array (objects by category) and view_history
 def phone_category_brand(request, cat):
     cat_obj = PhoneCategoryModel.objects.get(cat_url=cat)
     phone_objects = PhoneModel.objects.filter(phone_cat_id=cat_obj.cat_id)
