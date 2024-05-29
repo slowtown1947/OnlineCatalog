@@ -48,15 +48,15 @@ LOGGING = {
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ru9p81a@o@6b)gs!31ad*5^!bao&^+)38^4x_3ju1k@a(by!(g'
+SECRET_KEY = '#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-BOT_TOKEN = "7168984815:AAHozgrDX7PMI89yEHiqGvam9KQbulq95jI"
-BOT_URL = "https://api.telegram.org/bot%s/"%BOT_TOKEN
+BOT_TOKEN = "#"
+BOT_URL = "#"
 
 
 # Application definition
