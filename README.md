@@ -1,6 +1,6 @@
 # OnlineCatalog
 
-Welcome to the "Online Store" project repository. This project is a modern and user-friendly e-commerce website that offers a wide range of products and integrated features for the convenience of both customers and administrators.
+Welcome to the "OnlineCatalog" project repository. This project is a modern and user-friendly e-commerce Webonly that offers a wide range of products and integrated features for the convenience of both customers and administrators.
 
 - [Description](#description)
 - [Demo](#demo)
@@ -10,7 +10,7 @@ Welcome to the "Online Store" project repository. This project is a modern and u
 
 
 ## Description
-The "Online Store" is a fully-featured web application that allows users to browse and purchase products online. The store supports various product categories and account management for customers and administrators.
+The "Online Store" is a fully-featured desctop webonly application that allows users to browse and purchase products online. The store supports various product categories and account management for customers and administrators.
 
 ## Demo
 - Web Application: [OnlineCatalog](http://slowtown.pythonanywhere.com)
