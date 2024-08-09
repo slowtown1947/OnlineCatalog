@@ -1,11 +1,37 @@
 # OnlineCatalog
 
+Welcome to the "Online Store" project repository. This project is a modern and user-friendly e-commerce website that offers a wide range of products and integrated features for the convenience of both customers and administrators.
+
+- [Description](#description)
+- (Demo)(#demo)
+- [Features](#features)
+- [Technologies](#technologies)
+- [Installation](#installation)
+
+
 ## Description
-OnlineCatalog is a simple online catalog (market) of smartphones. The project also includes a Telegram bot for checking order information and creating new orders.
+The "Online Store" is a fully-featured web application that allows users to browse and purchase products online. The store supports various product categories and account management for customers and administrators.
 
 ## Demo
 - Web Application: [OnlineCatalog](http://slowtown.pythonanywhere.com)
 - Telegram Bot: [OnlineCatalog Bot](https://t.me/OnlineCatal0g_bot)
+
+## Features
+
+- **Product Catalog:** Browse, filter, and sort products by categories.
+- **Shopping Cart:** Add and remove products from the cart, and proceed to checkout.
+- **User Accounts:** Register, log in, and manage profiles and order history.
+- **Admin Panel:** Manage products, categories, orders, and users.
+- **Site Search:** Convenient product search by name and keywords.
+- **Smart Pages:** Create and manage smartpages from adminpanel. 
+
+## Technologies
+
+- **Frontend:** HTML, CSS, Bootstrap
+- **Backend:** Python, Django, DRF
+- **Database:** MySQL
+- **Hosting:** PythonAnywhere
+
 
 ## Installation
 
