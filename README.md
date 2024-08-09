@@ -3,7 +3,7 @@
 Welcome to the "Online Store" project repository. This project is a modern and user-friendly e-commerce website that offers a wide range of products and integrated features for the convenience of both customers and administrators.
 
 - [Description](#description)
-- (Demo)(#demo)
+- [Demo](#demo)
 - [Features](#features)
 - [Technologies](#technologies)
 - [Installation](#installation)
